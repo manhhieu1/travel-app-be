@@ -1,0 +1,10 @@
+version: '1.0'
+services:
+  web:
+    build: .
+    command: npm start
+    volumes:
+      - .:/apps/clinic-be/
+      - /apps/clinic-be/node_modules
+    ports:
+      - "${PORT}:${PORT}"
