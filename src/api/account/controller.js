@@ -3,8 +3,8 @@ import { APIError, APISuccess } from "../../common/api-res.js";
 import httpStatus from "http-status";
 
 const signUp = async (req, res, next) => {
-  const { email, password, phone, role, name, dob, sex } = req.body;
-  Service.signUp(email, password, phone, role, name, dob, sex)
+  const { email, password, phone, role, firstName, dob, sex } = req.body;
+  Service.signUp(email, password, phone, role, firstName, dob, sex)
     .then((data) => {
       return new APISuccess(
         res,
@@ -125,6 +125,31 @@ const getAccountInfo = async (req, res, next) => {
       next(err);
     });
 };
+const getUsers = async (req, res, next) => {
+  const { search, page, size, role } = req.query;
+  Service.getUsers(search, page, size, role)
+    .then((data) => {
+      return new APISuccess(res, {
+        data,
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+const getUser = async (req, res, next) => {
+  const { uid } = req.params;
+  Service.getUser(uid)
+    .then((data) => {
+      return new APISuccess(res, {
+        data,
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 
 export default {
   signUp,
@@ -135,4 +160,6 @@ export default {
   createAdmin,
   updateAccount,
   getAccountInfo,
+  getUsers,
+  getUser,
 };

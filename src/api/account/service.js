@@ -15,7 +15,7 @@ import {
 import mailer from "../../common/mailer.js";
 import Firebase from "../../common/firebase.js";
 import md5 from "md5";
-const signUp = async (phone, password, email, name, dob, sex) => {
+const signUp = async (email, password, phone, role, firstName, dob, sex) => {
   const emailConflict = await UserModel.findOne({ where: { email } });
   if (emailConflict)
     throw new APIError(THROW_ERR_MES.EMAIL_CONFLICT, httpStatus.CONFLICT);
@@ -27,9 +27,9 @@ const signUp = async (phone, password, email, name, dob, sex) => {
 
   const user = await UserModel.create({
     password,
-    phone,
     email,
-    name,
+    phone,
+    firstName,
     role,
     dob,
     sex,
@@ -59,7 +59,6 @@ const login = async (email, password) => {
     userId: user.uid,
     phone: user.phone,
     firstName: user.firstName,
-    lastName: user.lastName,
     dob: user.dob,
     sex: user.sex,
     role: user.role,
@@ -149,16 +148,7 @@ const changePassword = async (
   return res;
 };
 
-const createAdmin = async (
-  phone,
-  firstName,
-  lastName,
-  email,
-  dob,
-  sex,
-  img,
-  address
-) => {
+const createAdmin = async (phone, firstName, email, dob, sex, img, address) => {
   const _phoneConflict = UserModel.findOne({ where: { phone } });
   const _emailConflict = UserModel.findOne({ where: { email } });
 
@@ -183,7 +173,7 @@ const createAdmin = async (
     email,
     password,
     firstName,
-    lastName,
+
     dob,
     sex,
     refreshToken,
@@ -200,7 +190,6 @@ const updateAccount = async (
   userId,
   phone,
   firstName,
-  lastName,
   dob,
   sex,
   img,
@@ -215,7 +204,7 @@ const updateAccount = async (
   }
 
   const res = await UserModel.update(
-    { phone, firstName, lastName, dob, sex, img, address },
+    { phone, firstName, dob, sex, img, address },
     { where: { uid: userId } }
   );
 
@@ -240,6 +229,43 @@ const getAccountInfo = async (id) => {
   };
   return res;
 };
+const getUsers = async (search, page, size, role) => {
+  let res = {};
+  let query = `select u.uid userId, u.phone, u.first_name firstName, u.img, u.dob, u.sex, 
+  u.created_at createdAt, u.email, u.role from user u  where true `;
+  if (search)
+    query += ` and (u.first_name like '%${search}%' or u.last_name like '%${search}%'
+    or u.phone like '%${search}%') `;
+  if (role) query += ` and u.role = '${role}' `;
+
+  query += ` order by u.created_at desc `;
+
+  const offset = (page - 1) * size;
+
+  const users = await MasterDB.query(query, {
+    type: sequelize.QueryTypes.SELECT,
+  });
+
+  res.total = users.length;
+  res.users = users.slice(offset, offset + size);
+
+  return res;
+};
+
+const getUser = async (uid) => {
+  let res = {};
+  let query = `select u.uid userId, u.phone, u.first_name firstName, u.last_name lastName, u.img, u.dob, u.sex, 
+  u.created_at createdAt, u.email, u.role from user u  where u.uid='${uid}'`;
+  const user = await MasterDB.query(query, {
+    type: sequelize.QueryTypes.SELECT,
+  });
+  if (!user || !user[0])
+    throw new APIError(THROW_ERR_MES.ACCOUNT_NOTFOUND, httpStatus.NOT_FOUND);
+
+  res.user = user[0];
+
+  return res;
+};
 
 export default {
   signUp,
@@ -249,4 +275,6 @@ export default {
   createAdmin,
   updateAccount,
   getAccountInfo,
+  getUsers,
+  getUser,
 };

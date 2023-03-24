@@ -64,7 +64,27 @@ const userUnsubcribeTopic = {
     userId: Joi.string().trim().required(),
   }),
 };
-
+const getUsers = {
+  query: Joi.object({
+    page: Joi.number()
+      .integer()
+      .allow("", null)
+      .empty(["", null])
+      .positive()
+      .min(1)
+      .default(1)
+      .required(),
+    size: Joi.number()
+      .integer()
+      .allow("", null)
+      .empty(["", null])
+      .positive()
+      .min(1)
+      .default(10)
+      .required(),
+    role: Joi.string().trim().required(),
+  }).unknown(),
+};
 export default {
   signUp,
   login,
@@ -73,4 +93,5 @@ export default {
   createAdmin,
   userSubcribeTopic,
   userUnsubcribeTopic,
+  getUsers,
 };

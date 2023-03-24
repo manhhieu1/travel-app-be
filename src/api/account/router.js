@@ -215,4 +215,55 @@ router.route("/accounts").put(controller.updateAccount);
  */
 router.route("/account-info").get(controller.getAccountInfo);
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     description: get user
+ *     tags:
+ *     - Users
+ *     parameters:
+ *      - name: page
+ *        in: query
+ *        schema:
+ *          type: number
+ *      - name: size
+ *        in: query
+ *        schema:
+ *          type: number
+ *      - name: search
+ *        in: query
+ *        schema:
+ *          type: string
+ *      - name: role
+ *        in: query
+ *        schema:
+ *          type: string
+ *          enum:
+ *            - customer
+ *            - admin
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+router.route("/users").get(validate(validation.getUsers), controller.getUsers);
+
+/**
+ * @swagger
+ * /users/{uid}:
+ *   get:
+ *     description: get detail users
+ *     tags:
+ *     - Users
+ *     parameters:
+ *      - name: uid
+ *        in: path
+ *        schema:
+ *          type: string
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+router.route("/users/:uid").get(controller.getUser);
+
 export default router;
