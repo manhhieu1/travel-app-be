@@ -11,7 +11,7 @@ const router = Router();
  *   post:
  *     description: create user account
  *     tags:
- *     - Accounts E sắp thành master rồi
+ *     - Accounts
  *     requestBody:
  *       description:
  *       content:
@@ -19,7 +19,7 @@ const router = Router();
  *           schema:
  *             type: object
  *             properties:
- *                phone:
+ *                email:
  *                  type: string
  *                  required: true
  *                password:
@@ -30,9 +30,7 @@ const router = Router();
  *                  required: true
  *                firstName:
  *                  type: string
- *                lastName:
- *                  type: string
- *                email:
+ *                phone:
  *                  type: string
  *                dob:
  *                  type: string
@@ -56,7 +54,7 @@ router
  *   post:
  *     description: login
  *     tags:
- *     - Accounts E sắp thành master rồi
+ *     - Accounts
  *     requestBody:
  *       description:
  *       content:
@@ -82,7 +80,7 @@ router
 //  *   post:
 //  *     description: user login
 //  *     tags:
-//  *     - Accounts E sắp thành master rồi
+//  *     - Accounts
 //  *     requestBody:
 //  *       description:
 //  *       content:
@@ -108,7 +106,7 @@ router
  *   post:
  *     description: change password
  *     tags:
- *     - Accounts E sắp thành master rồi
+ *     - Accounts
  *     requestBody:
  *       description:
  *       content:
@@ -148,8 +146,6 @@ router
  *                  type: string
  *                firstName:
  *                  type: string
- *                lastName:
- *                  type: string
  *                email:
  *                  type: string
  *                dob:
@@ -174,7 +170,7 @@ router
  *   put:
  *     description: update account
  *     tags:
- *     - Accounts E sắp thành master rồi
+ *     - Accounts
  *     requestBody:
  *       description:
  *       content:
@@ -208,7 +204,7 @@ router.route("/accounts").put(controller.updateAccount);
  *   get:
  *     description: get account info
  *     tags:
- *     - Accounts E sắp thành master rồi
+ *     - Accounts
  *     responses:
  *       200:
  *         description: Success

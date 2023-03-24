@@ -1,10 +1,5 @@
 import config from "../../config/index.js";
-import {
-  USER_ACTIVE,
-  CACHE_TIME,
-  THROW_ERR_MES,
-  USER_TYPE,
-} from "../../common/constant.js";
+import { THROW_ERR_MES, USER_TYPE } from "../../common/constant.js";
 import Jwt from "../../common/jwt.js";
 import UserModel from "../../sequelize/model/user.js";
 import pkg from "sequelize";
@@ -15,7 +10,6 @@ const { Op } = pkg;
 export const cache = new NodeCache({ stdTTL: 5 * 60, checkperiod: 15 });
 
 const authCheck = async (req, res, next) => {
-  // Remove last slash
   const path = req.path.endsWith("/") ? req.path.slice(0, -1) : req.path;
   const method =
     req.method === "GET" ||
@@ -63,16 +57,6 @@ const authCheck = async (req, res, next) => {
     next();
     return;
   }
-
-  // if (path.includes("/doctors")) {
-  //   next();
-  //   return;
-  // }
-
-  // if (path === "/cache") {
-  //   next();
-  //   return;
-  // }
 
   // Get x-auth-token in header
   let token = req.header("Authorization");
