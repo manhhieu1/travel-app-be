@@ -1,5 +1,5 @@
 export const USER_ACTIVE = {
-  INACTIVE: 0,
+  deleted: 0,
   ACTIVE: 1,
 };
 
@@ -19,6 +19,7 @@ export const THROW_ERR_MES = {
   DOCTOR_DAYOFF_NOTFOUND: "Không tìm thấy lịch nghỉ của bác sĩ",
   DOCTOR_DAYOFF_STATUS_CONFLICT: "Không thể cập nhật trạng thái hiện tại",
   EMAIL_CONFLICT: "Email đã được sử dụng",
+  CODE_CONFLICT: "Mã bị trùng",
 };
 
 export const USER_SEX = {

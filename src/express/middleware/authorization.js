@@ -57,6 +57,18 @@ const authCheck = async (req, res, next) => {
     next();
     return;
   }
+  if (path === "/products") {
+    next();
+    return;
+  }
+  if (path === "/categories") {
+    next();
+    return;
+  }
+  if (path === "/categories/:id") {
+    next();
+    return;
+  }
 
   // Get x-auth-token in header
   let token = req.header("Authorization");
